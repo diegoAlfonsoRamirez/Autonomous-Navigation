@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<launch>
+    <rosparam file = "$(find autonomous_navigation)/params/params.yaml" command = "load" />
+    <!-- <node name = "odmetry" pkg = "autonomous_navigation" type = "odometry.py" /> -->
+    <include file = "$(find ros_deep_learning)/launch/video_source.ros1.launch" />
+    <node name = "camea_info" pkg = "autonomous_navigation" type = "pub_calibration.py" />
+    <node pkg="image_transport" type="republish" name="image_compress" args="raw in:=/video_source/raw compressed out:=/image_compressed"/>
+    <include file = "$(find autonomous_navigation)/launch/arucos_detect.launch" />
+    <node name = "localization" pkg = "autonomous_navigation" type = "odometryF.py" />
+    <node name = "aruco_finder" pkg = "autonomous_navigation" type = "aruco_finder.py" />
+    <!-- <node name = "bug_2" pkg = "autonomous_navigation" type = "bug2.py" output = "screen" />-->
+    <node name = "bug_0" pkg = "autonomous_navigation" type = "bug0.py" output = "screen" />
+</launch>
